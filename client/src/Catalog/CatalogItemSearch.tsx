@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { SearchInput } from '@patternfly/react-core';
-import { CatalogItem } from './types';
+import { VideoAuthorCount } from '../types';
 
 type CatalogItemSearchProps = {
-  catalogItems: CatalogItem[];
-  onFilter: (filteredItems: CatalogItem[] | null) => void;
+  catalogItems: VideoAuthorCount[];
+  onFilter: (filteredItems: VideoAuthorCount[] | null) => void;
 };
 
 const CatalogItemSearch: React.FC<CatalogItemSearchProps> = ({

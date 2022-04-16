@@ -10,21 +10,25 @@ import {
   StackItem,
   Text,
 } from '@patternfly/react-core';
-import { CatalogItem } from './types';
+import { CatalogId } from './types';
 import CatalogItemSearch from './CatalogItemSearch';
+import { VideoAuthorCount } from '../types';
 
 type CatalogItemsProps = {
-  onChange: (catalogIds: string[]) => void;
+  onChange: (catalogIds: CatalogId[]) => void;
+};
+
+type SelectedState = {
+  [key: string]: boolean;
 };
 
 const CatalogItems: React.FC<CatalogItemsProps> = ({ onChange }) => {
-  const [catalogItems, loaded, error] = useApi<CatalogItem[]>(getCatalogItems);
+  const [catalogItems, loaded, error] =
+    useApi<VideoAuthorCount[]>(getCatalogItems);
   const [filteredCatalogItems, setFilteredCatalogItems] = React.useState<
-    CatalogItem[] | null
+    VideoAuthorCount[] | null
   >(null);
-  const [checkedState, setCheckedState] = React.useState<{
-    [key: string]: boolean;
-  }>({});
+  const [checkedState, setCheckedState] = React.useState<SelectedState>({});
 
   if (!loaded) {
     return <Spinner size="sm" />;
@@ -38,34 +42,6 @@ const CatalogItems: React.FC<CatalogItemsProps> = ({ onChange }) => {
   if (catalogItems.length === 0) {
     return <Text>No Catalog Items</Text>;
   }
-
-  const handleSelection = (checked: boolean, name: string) => {
-    const data = {
-      ...checkedState,
-      [name]: checked,
-    };
-    setCheckedState(data);
-    const checkedItems = Object.keys(data).filter((key) => data[key]);
-    onChange(checkedItems);
-  };
-
-  const ListItemWrapper = ({
-    name,
-    count,
-    ...props
-  }: {
-    name: string;
-    count: number;
-  }) => (
-    <ListItem {...props}>
-      <Checkbox
-        id={name}
-        isChecked={checkedState[name] ?? false}
-        onChange={(checked) => handleSelection(checked, name)}
-        label={`${name} (${count})`}
-      />
-    </ListItem>
-  );
 
   return (
     <Stack hasGutter>
@@ -83,8 +59,25 @@ const CatalogItems: React.FC<CatalogItemsProps> = ({ onChange }) => {
       <StackItem>
         <List isPlain>
           {(filteredCatalogItems ? filteredCatalogItems : catalogItems).map(
-            ({ name, count }) => (
-              <ListItemWrapper key={name} name={name} count={count} />
+            ({ id, name, count }) => (
+              <ListItem key={id}>
+                <Checkbox
+                  id={id.toString()}
+                  label={`${name} (${count})`}
+                  isChecked={checkedState[id] ?? false}
+                  onChange={(checked) => {
+                    const data: SelectedState = {
+                      ...checkedState,
+                      [id]: checked,
+                    };
+                    setCheckedState(data);
+                    const checkedItems = Object.keys(data)
+                      .filter((key) => data[key])
+                      .map((id) => parseInt(id));
+                    onChange(checkedItems);
+                  }}
+                />
+              </ListItem>
             )
           )}
         </List>

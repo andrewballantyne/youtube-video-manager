@@ -2,9 +2,12 @@ import * as React from 'react';
 import { Split, SplitItem } from '@patternfly/react-core';
 import CatalogItems from './CatalogItems';
 import CatalogView from './CatalogView';
+import { CatalogId } from './types';
 
 const Catalog: React.FC = () => {
-  const [catalogSelection, setCatalogSelection] = React.useState<string[]>([]);
+  const [catalogSelection, setCatalogSelection] = React.useState<CatalogId[]>(
+    []
+  );
 
   return (
     <Split hasGutter>
@@ -14,7 +17,7 @@ const Catalog: React.FC = () => {
         />
       </SplitItem>
       <SplitItem isFilled>
-        <CatalogView catalogSelection={catalogSelection} />
+        <CatalogView catalogSelections={catalogSelection} />
       </SplitItem>
     </Split>
   );

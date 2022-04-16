@@ -21,14 +21,16 @@ app.get("/", (req, res) => {
  * TODO: Document
  */
 app.get("/catalogs", (req, res) => {
-  const data = storage.VideoStorage.get();
+  const videoData = storage.VideoStorage.get();
+  const authorData = storage.AuthorStorage.get();
 
-  const collectedCatalogItems = Object.values(data).reduce(
-    (acc, { author }) => ({
+  const collectedCatalogItems = Object.values(videoData).reduce(
+    (acc, { authorId }) => ({
       ...acc,
-      [author]: {
-        name: author,
-        count: acc[author] ? acc[author].count + 1 : 1,
+      [authorId]: {
+        id: authorId,
+        name: authorData[authorId].name,
+        count: acc[authorId] ? acc[authorId].count + 1 : 1,
       },
     }),
     {}
@@ -106,14 +108,17 @@ app.post("/submit-data", (req, res) => {
  */
 app.listen(EXPRESS_PORT, () => {
   console.log(`Example app listening on port ${EXPRESS_PORT}`);
-  storage.ImageStorage.startup();
-  storage.VideoStorage.startup();
+  const storages = Object.keys(storage);
+  storages.forEach((storageName) => {
+    storage[storageName].startup();
+  });
 
   logger.log(
     `Persist loop started, triggering at ${SAVE_DURATION}ms intervals...`
   );
   setInterval(() => {
-    storage.ImageStorage.persistStorage();
-    storage.VideoStorage.persistStorage();
+    storages.forEach((storageName) => {
+      storage[storageName].persistStorage();
+    });
   }, SAVE_DURATION);
 });

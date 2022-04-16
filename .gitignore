@@ -2,7 +2,7 @@
 
 # App specifics
 storage.json
-_backup
+_backups
 
 # dependencies
 node_modules

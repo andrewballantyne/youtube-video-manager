@@ -1,4 +1,5 @@
 export type VideoAuthorCount = {
+  id: number;
   name: string;
   count: number;
 };
@@ -6,7 +7,7 @@ export type VideoAuthorCount = {
 export type Video = {
   id: number;
   title: string;
-  author: string;
+  authorId: number;
   duration: string;
   url: string;
   imgId: number;

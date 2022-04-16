@@ -11,17 +11,16 @@ import {
 import YoutubeIcon from '@patternfly/react-icons/dist/esm/icons/youtube-icon';
 import useApi from '../api/useApi';
 import { getCatalogByName } from '../api/apiCallStates';
-import { Video } from './types';
+import { CatalogId } from './types';
+import { Video } from '../types';
 
 type CatalogViewProps = {
-  catalogSelection: string[];
+  catalogSelections: CatalogId[];
 };
 
-const CatalogView: React.FC<CatalogViewProps> = ({ catalogSelection }) => {
+const CatalogView: React.FC<CatalogViewProps> = ({ catalogSelections }) => {
   const [videos] = useApi<Video[]>(
-    catalogSelection.length > 0
-      ? getCatalogByName(catalogSelection.join(','))
-      : null
+    catalogSelections.length > 0 ? getCatalogByName(catalogSelections) : null
   );
 
   if (!videos?.length) {
@@ -38,7 +37,7 @@ const CatalogView: React.FC<CatalogViewProps> = ({ catalogSelection }) => {
   return (
     <>
       <Title size="2xl" headingLevel="h2">
-        {catalogSelection.join(', ')} Content
+        {catalogSelections.join(', ')} Content
       </Title>
       {videos.map((video) => (
         <Card key={video.id}>
