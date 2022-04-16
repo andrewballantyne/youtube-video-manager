@@ -1,0 +1,9 @@
+{
+  "name": "youtube-watch-list",
+  "version": "1.0.0",
+  "description": "Handles storing and reading back YouTube Watch Later Playlist",
+  "private": true,
+  "author": "Andrew Ballantyne (ballantyno@gmail.com)",
+  "license": "ISC",
+  "workspaces": ["client", "server"]
+}
