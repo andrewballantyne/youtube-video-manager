@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  Button,
   SimpleList,
   SimpleListItem,
   Spinner,
@@ -21,7 +20,7 @@ type CatalogFilterAuthorsProps = {
   selectedId: CatalogAuthorId;
 };
 
-const INITIAL_LIMIT = 20;
+const INITIAL_LIMIT = 10;
 
 const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
   onChange,

@@ -1,25 +1,40 @@
 import * as React from 'react';
-import { CatalogAuthorId } from './types';
+import { Stack, StackItem, Title } from '@patternfly/react-core';
+import { CatalogAuthorId, CatalogDurationState } from './types';
 import CatalogFilterAuthors from './filters/CatalogFilterAuthors';
-import { Text } from '@patternfly/react-core';
+import CatalogFilterDuration from './filters/CatalogFilterDuration';
 
 type CatalogItemsProps = {
   onAuthorsChange: (authorId: CatalogAuthorId) => void;
   selectedAuthorId: CatalogAuthorId;
+
+  onDurationChange: (duration: CatalogDurationState) => void;
+  selectedDuration: CatalogDurationState;
 };
 
 const CatalogFilters: React.FC<CatalogItemsProps> = ({
   onAuthorsChange,
+  onDurationChange,
   selectedAuthorId,
+  selectedDuration,
 }) => {
   return (
-    <>
-      <Text>Authors</Text>
-      <CatalogFilterAuthors
-        onChange={onAuthorsChange}
-        selectedId={selectedAuthorId}
-      />
-    </>
+    <Stack hasGutter>
+      <StackItem>
+        <Title headingLevel="h3">Duration</Title>
+        <CatalogFilterDuration
+          onDurationChange={onDurationChange}
+          selectedDuration={selectedDuration}
+        />
+      </StackItem>
+      <StackItem>
+        <Title headingLevel="h3">Authors</Title>
+        <CatalogFilterAuthors
+          onChange={onAuthorsChange}
+          selectedId={selectedAuthorId}
+        />
+      </StackItem>
+    </Stack>
   );
 };
 
