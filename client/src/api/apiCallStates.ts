@@ -1,13 +1,17 @@
 import { ApiState } from './types';
-import { CatalogId } from '../Catalog/types';
+import { AuthorId } from '../types';
 
-export const getCatalogItems: ApiState = {
+export const getCatalogAuthorItems: ApiState = {
   apiPath: '/catalogs',
   method: 'GET',
 };
 
-type GetCatalogByName = (catalogIds: CatalogId[]) => ApiState;
-export const getCatalogByName: GetCatalogByName = (authorIds) => ({
-  apiPath: `/catalog/${authorIds.join(',')}`,
+export const getCatalogVideosByAuthorId = (authorId: AuthorId): ApiState => ({
+  apiPath: `/catalog/${authorId}`,
+  method: 'GET',
+});
+
+export const getAuthorById = (authorId: AuthorId): ApiState => ({
+  apiPath: `/author/${authorId}`,
   method: 'GET',
 });

@@ -45,14 +45,23 @@ app.get("/catalogs", (req, res) => {
 /**
  * TODO: Document
  */
-app.get("/catalog/:list", (req, res) => {
-  const { list } = req.params;
-  const authorIds = list.split(",").map((value) => parseInt(value));
-  console.debug("authorIds", authorIds);
+app.get("/author/:authorId", (req, res) => {
+  const { authorId } = req.params;
+
+  const authorData = storage.AuthorStorage.get(authorId);
+
+  res.json(authorData);
+});
+
+/**
+ * TODO: Document
+ */
+app.get("/catalog/:authorId", (req, res) => {
+  const authorId = parseInt(req.params.authorId);
 
   const videoData = storage.VideoStorage.get();
-  const videos = Object.values(videoData).filter((video) =>
-    authorIds.find((authorId) => video.authorId === authorId)
+  const videos = Object.values(videoData).filter(
+    (video) => video.authorId === authorId
   );
 
   res.json(videos);

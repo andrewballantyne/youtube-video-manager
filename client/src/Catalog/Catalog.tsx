@@ -2,22 +2,22 @@ import * as React from 'react';
 import { Split, SplitItem } from '@patternfly/react-core';
 import CatalogFilters from './CatalogFilters';
 import CatalogView from './CatalogView';
-import { CatalogId } from './types';
+import { CatalogAuthorId } from './types';
 
 const Catalog: React.FC = () => {
-  const [authorSelections, setAuthorSelections] = React.useState<CatalogId[]>(
-    []
-  );
+  const [authorSelection, setAuthorSelection] =
+    React.useState<CatalogAuthorId>(null);
 
   return (
     <Split hasGutter>
       <SplitItem>
         <CatalogFilters
-          onAuthorsChange={(catalogId) => setAuthorSelections(catalogId)}
+          onAuthorsChange={(authorId) => setAuthorSelection(authorId)}
+          selectedAuthorId={authorSelection}
         />
       </SplitItem>
       <SplitItem isFilled>
-        <CatalogView catalogSelections={authorSelections} />
+        <CatalogView selectedAuthorId={authorSelection} />
       </SplitItem>
     </Split>
   );

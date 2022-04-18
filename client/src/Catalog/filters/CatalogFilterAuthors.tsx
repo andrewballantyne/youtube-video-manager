@@ -1,36 +1,39 @@
 import * as React from 'react';
 import {
-  Checkbox,
-  List,
-  ListItem,
+  Button,
+  SimpleList,
+  SimpleListItem,
   Spinner,
+  Split,
+  SplitItem,
   Stack,
   StackItem,
   Text,
 } from '@patternfly/react-core';
 import useApi from '../../api/useApi';
 import { VideoAuthorCount } from '../../types';
-import { getCatalogItems } from '../../api/apiCallStates';
+import { getCatalogAuthorItems } from '../../api/apiCallStates';
 import CatalogFilterAuthorSearch from './CatalogFilterAuthorSearch';
-import { CatalogId } from '../types';
+import { CatalogAuthorId } from '../types';
 
 type CatalogFilterAuthorsProps = {
-  onChange: (catalogIds: CatalogId[]) => void;
+  onChange: (authorId: CatalogAuthorId) => void;
+  selectedId: CatalogAuthorId;
 };
 
-type SelectedState = {
-  [key: string]: boolean;
-};
+const INITIAL_LIMIT = 20;
 
 const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
   onChange,
+  selectedId,
 }) => {
-  const [authorsCountStat, loaded, error] =
-    useApi<VideoAuthorCount[]>(getCatalogItems);
+  const [authorsCountStat, loaded, error] = useApi<VideoAuthorCount[]>(
+    getCatalogAuthorItems
+  );
   const [filteredCatalogItems, setFilteredCatalogItems] = React.useState<
     VideoAuthorCount[] | null
   >(null);
-  const [checkedState, setCheckedState] = React.useState<SelectedState>({});
+  const [showAll, setShowAll] = React.useState(false);
 
   if (!loaded) {
     return <Spinner size="sm" />;
@@ -42,8 +45,15 @@ const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
   }
 
   if (authorsCountStat.length === 0) {
-    return <Text>No Catalog Items</Text>;
+    return <Text>No Catalog Authors</Text>;
   }
+
+  const visibleItems = (
+    filteredCatalogItems ? filteredCatalogItems : authorsCountStat
+  ).slice(0, showAll ? undefined : INITIAL_LIMIT);
+  const countTotal = (acc: number, { count }: VideoAuthorCount) => acc + count;
+  const visibleCount = visibleItems.reduce(countTotal, 0);
+  const totalCount = authorsCountStat.reduce(countTotal, 0);
 
   return (
     <Stack hasGutter>
@@ -56,33 +66,34 @@ const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
         />
       </StackItem>
       <StackItem>
-        {authorsCountStat.reduce((acc, { count }) => acc + count, 0)} Items
+        <Split>
+          <SplitItem isFilled>{visibleCount} Items</SplitItem>
+          {visibleCount !== totalCount && (
+            <SplitItem isFilled style={{ textAlign: 'right' }}>
+              {totalCount} Total
+            </SplitItem>
+          )}
+        </Split>
       </StackItem>
       <StackItem>
-        <List isPlain>
-          {(filteredCatalogItems ? filteredCatalogItems : authorsCountStat).map(
-            ({ id, name, count }) => (
-              <ListItem key={id}>
-                <Checkbox
-                  id={id.toString()}
-                  label={`${name} (${count})`}
-                  isChecked={checkedState[id] ?? false}
-                  onChange={(checked) => {
-                    const data: SelectedState = {
-                      ...checkedState,
-                      [id]: checked,
-                    };
-                    setCheckedState(data);
-                    const checkedItems = Object.keys(data)
-                      .filter((key) => data[key])
-                      .map((id) => parseInt(id));
-                    onChange(checkedItems);
-                  }}
-                />
-              </ListItem>
-            )
-          )}
-        </List>
+        {visibleItems.length > 0 && (
+          <SimpleList>
+            {visibleItems.map(({ id, name, count }) => (
+              <SimpleListItem
+                key={id}
+                isActive={selectedId === id}
+                onClick={() => onChange(id)}
+              >
+                {name} ({count})
+              </SimpleListItem>
+            ))}
+            {!showAll && (
+              <SimpleListItem onClick={() => setShowAll(true)}>
+                (Show All)
+              </SimpleListItem>
+            )}
+          </SimpleList>
+        )}
       </StackItem>
     </Stack>
   );

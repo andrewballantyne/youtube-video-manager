@@ -2,21 +2,23 @@ import * as React from 'react';
 import { EmptyState, EmptyStateIcon, Title } from '@patternfly/react-core';
 import YoutubeIcon from '@patternfly/react-icons/dist/esm/icons/youtube-icon';
 import useApi from '../api/useApi';
-import { getCatalogByName } from '../api/apiCallStates';
-import { CatalogId } from './types';
+import { getCatalogVideosByAuthorId } from '../api/apiCallStates';
+import { CatalogAuthorId } from './types';
 import { Video } from '../types';
 import CatalogItem from './views/CatalogItem';
+import AuthorNameFromId from '../converters/AuthorNameFromId';
+import { plural } from '../utils/lang';
 
 type CatalogViewProps = {
-  catalogSelections: CatalogId[];
+  selectedAuthorId: CatalogAuthorId;
 };
 
-const CatalogView: React.FC<CatalogViewProps> = ({ catalogSelections }) => {
+const CatalogView: React.FC<CatalogViewProps> = ({ selectedAuthorId }) => {
   const [videos] = useApi<Video[]>(
-    catalogSelections.length > 0 ? getCatalogByName(catalogSelections) : null
+    selectedAuthorId ? getCatalogVideosByAuthorId(selectedAuthorId) : null
   );
 
-  if (!videos?.length) {
+  if (!videos?.length || selectedAuthorId === null) {
     return (
       <EmptyState>
         <EmptyStateIcon variant="container" component={YoutubeIcon} />
@@ -30,7 +32,8 @@ const CatalogView: React.FC<CatalogViewProps> = ({ catalogSelections }) => {
   return (
     <>
       <Title size="2xl" headingLevel="h2">
-        Content
+        <AuthorNameFromId id={selectedAuthorId} />{' '}
+        {plural('Video', videos.length)} ({videos.length})
       </Title>
       {videos.map((video) => (
         <CatalogItem key={video.id} data={video} />

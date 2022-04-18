@@ -7,7 +7,7 @@ type CatalogItemProps = {
 };
 
 const CatalogItem: React.FC<CatalogItemProps> = ({
-  data: { imgId, title, authorId },
+  data: { imgId, title, duration },
 }) => {
   return (
     <Split>
@@ -15,7 +15,7 @@ const CatalogItem: React.FC<CatalogItemProps> = ({
       <SplitItem>
         <Stack>
           <StackItem>{title}</StackItem>
-          <StackItem>{authorId}</StackItem>
+          <StackItem>{duration}</StackItem>
         </Stack>
       </SplitItem>
     </Split>

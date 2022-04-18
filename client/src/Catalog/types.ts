@@ -1,3 +1,3 @@
-import { Video } from '../types';
+import { AuthorId } from '../types';
 
-export type CatalogId = Video['authorId'];
+export type CatalogAuthorId = AuthorId | null;

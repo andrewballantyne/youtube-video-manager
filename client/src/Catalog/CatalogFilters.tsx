@@ -1,17 +1,24 @@
 import * as React from 'react';
-import { CatalogId } from './types';
+import { CatalogAuthorId } from './types';
 import CatalogFilterAuthors from './filters/CatalogFilterAuthors';
 import { Text } from '@patternfly/react-core';
 
 type CatalogItemsProps = {
-  onAuthorsChange: (catalogIds: CatalogId[]) => void;
+  onAuthorsChange: (authorId: CatalogAuthorId) => void;
+  selectedAuthorId: CatalogAuthorId;
 };
 
-const CatalogFilters: React.FC<CatalogItemsProps> = ({ onAuthorsChange }) => {
+const CatalogFilters: React.FC<CatalogItemsProps> = ({
+  onAuthorsChange,
+  selectedAuthorId,
+}) => {
   return (
     <>
       <Text>Authors</Text>
-      <CatalogFilterAuthors onChange={onAuthorsChange} />
+      <CatalogFilterAuthors
+        onChange={onAuthorsChange}
+        selectedId={selectedAuthorId}
+      />
     </>
   );
 };
