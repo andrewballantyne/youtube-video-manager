@@ -10,9 +10,9 @@ import {
   StackItem,
   Text,
 } from '@patternfly/react-core';
-import useApi from '../../api/useApi';
+import useGetApi from '../../api/useGetApi';
 import { VideoAuthorCount } from '../../types';
-import { getCatalogAuthorItems } from '../../api/apiCallStates';
+import { getCatalogAuthorItems } from '../../api/apiReadStates';
 import CatalogFilterAuthorSearch from './CatalogFilterAuthorSearch';
 import { CatalogAuthorId } from '../types';
 
@@ -27,7 +27,7 @@ const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
   onChange,
   selectedId,
 }) => {
-  const [authorsCountStat, loaded, error] = useApi<VideoAuthorCount[]>(
+  const [authorsCountStat, loaded, error] = useGetApi<VideoAuthorCount[]>(
     getCatalogAuthorItems()
   );
   const [filteredCatalogItems, setFilteredCatalogItems] = React.useState<
@@ -84,7 +84,9 @@ const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
                 isActive={selectedId === id}
                 onClick={() => onChange(id)}
               >
-                {name} ({count})
+                <span style={{ whiteSpace: 'nowrap' }}>
+                  {name} ({count})
+                </span>
               </SimpleListItem>
             ))}
             {!showAll && (

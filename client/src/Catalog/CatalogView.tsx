@@ -7,8 +7,8 @@ import {
   Title,
 } from '@patternfly/react-core';
 import YoutubeIcon from '@patternfly/react-icons/dist/esm/icons/youtube-icon';
-import useApi from '../api/useApi';
-import { getCatalogVideosByAuthorId } from '../api/apiCallStates';
+import useGetApi from '../api/useGetApi';
+import { getCatalogVideosByAuthorId } from '../api/apiReadStates';
 import { CatalogAuthorId } from './types';
 import { VideoKind } from '../types';
 import CatalogItem from './views/CatalogItem';
@@ -20,7 +20,7 @@ type CatalogViewProps = {
 };
 
 const CatalogView: React.FC<CatalogViewProps> = ({ selectedAuthorId }) => {
-  const [videos] = useApi<VideoKind[]>(
+  const [videos] = useGetApi<VideoKind[]>(
     selectedAuthorId ? getCatalogVideosByAuthorId(selectedAuthorId) : null
   );
 
@@ -45,7 +45,7 @@ const CatalogView: React.FC<CatalogViewProps> = ({ selectedAuthorId }) => {
       </StackItem>
       <StackItem>
         {videos.map((video) => (
-          <CatalogItem key={video.id} data={video} />
+          <CatalogItem key={video.id} video={video} />
         ))}
       </StackItem>
     </Stack>

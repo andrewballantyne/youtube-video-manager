@@ -45,6 +45,16 @@ app.get("/catalogs", (req, res) => {
 /**
  * TODO: Document
  */
+app.post("/archive-video", (req, res) => {
+  const { id } = req.body;
+  console.log("Archive Video", id, "-- Not Implemented");
+
+  res.json({ status: "not implemented" });
+});
+
+/**
+ * TODO: Document
+ */
 app.get("/author/:authorId", (req, res) => {
   const { authorId } = req.params;
 
@@ -71,9 +81,13 @@ app.get("/catalog/:authorId", (req, res) => {
   const authorId = parseInt(req.params.authorId);
 
   const videoData = storage.VideoStorage.get();
-  const videos = Object.values(videoData).filter(
-    (video) => video.authorId === authorId
-  );
+  const videos = Object.values(videoData)
+    .filter((video) => video.authorId === authorId)
+    .map((video) => ({
+      ...video,
+      // TODO: Update all records to have the base value
+      url: `https://youtube.com${video.url}`,
+    }));
 
   res.json(videos);
 });

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import * as _ from 'lodash-es';
 import fetchApi from './fetchApi';
-import { ApiState } from './types';
+import { ApiReadState } from './types';
 
-const useApi = <T>(
-  apiState: ApiState | null
+const useGetApi = <T>(
+  apiState: ApiReadState | null
 ): [T | null, boolean, Error | null] => {
   const [data, setData] = React.useState<T | null>(null);
   const [error, setError] = React.useState<Error | null>(null);
-  const lastApiStateRef = React.useRef<ApiState | null>(null);
+  const lastApiStateRef = React.useRef<ApiReadState | null>(null);
 
   const hasData = !!apiState;
   const canMakeAPICall =
@@ -16,8 +16,8 @@ const useApi = <T>(
   React.useEffect(() => {
     if (canMakeAPICall) {
       lastApiStateRef.current = apiState;
-      const { apiPath, method } = apiState;
-      fetchApi<T>(apiPath, method)
+      const { apiPath } = apiState;
+      fetchApi<T>(apiPath, 'GET')
         .then((responseData) => {
           setData(responseData);
         })
@@ -31,4 +31,4 @@ const useApi = <T>(
   return [hasData ? data : null, isLoaded, error];
 };
 
-export default useApi;
+export default useGetApi;
