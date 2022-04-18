@@ -1,6 +1,4 @@
 import * as React from 'react';
-import useApi from '../api/useApi';
-import { getCatalogItems } from '../api/apiCallStates';
 import {
   Checkbox,
   List,
@@ -10,11 +8,13 @@ import {
   StackItem,
   Text,
 } from '@patternfly/react-core';
-import { CatalogId } from './types';
-import CatalogItemSearch from './CatalogItemSearch';
-import { VideoAuthorCount } from '../types';
+import useApi from '../../api/useApi';
+import { VideoAuthorCount } from '../../types';
+import { getCatalogItems } from '../../api/apiCallStates';
+import CatalogFilterAuthorSearch from './CatalogFilterAuthorSearch';
+import { CatalogId } from '../types';
 
-type CatalogItemsProps = {
+type CatalogFilterAuthorsProps = {
   onChange: (catalogIds: CatalogId[]) => void;
 };
 
@@ -22,8 +22,10 @@ type SelectedState = {
   [key: string]: boolean;
 };
 
-const CatalogItems: React.FC<CatalogItemsProps> = ({ onChange }) => {
-  const [catalogItems, loaded, error] =
+const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
+  onChange,
+}) => {
+  const [authorsCountStat, loaded, error] =
     useApi<VideoAuthorCount[]>(getCatalogItems);
   const [filteredCatalogItems, setFilteredCatalogItems] = React.useState<
     VideoAuthorCount[] | null
@@ -34,31 +36,31 @@ const CatalogItems: React.FC<CatalogItemsProps> = ({ onChange }) => {
     return <Spinner size="sm" />;
   }
 
-  if (!catalogItems || error) {
-    console.error('Error loading catalog items', catalogItems);
+  if (!authorsCountStat || error) {
+    console.error('Error loading catalog items', authorsCountStat);
     return <div>Could not load Catalog Items.</div>;
   }
 
-  if (catalogItems.length === 0) {
+  if (authorsCountStat.length === 0) {
     return <Text>No Catalog Items</Text>;
   }
 
   return (
     <Stack hasGutter>
       <StackItem>
-        <CatalogItemSearch
-          catalogItems={catalogItems}
+        <CatalogFilterAuthorSearch
+          authorsCountStat={authorsCountStat}
           onFilter={(newCatalogItems) =>
             setFilteredCatalogItems(newCatalogItems)
           }
         />
       </StackItem>
       <StackItem>
-        {catalogItems.reduce((acc, { count }) => acc + count, 0)} Items
+        {authorsCountStat.reduce((acc, { count }) => acc + count, 0)} Items
       </StackItem>
       <StackItem>
         <List isPlain>
-          {(filteredCatalogItems ? filteredCatalogItems : catalogItems).map(
+          {(filteredCatalogItems ? filteredCatalogItems : authorsCountStat).map(
             ({ id, name, count }) => (
               <ListItem key={id}>
                 <Checkbox
@@ -86,4 +88,4 @@ const CatalogItems: React.FC<CatalogItemsProps> = ({ onChange }) => {
   );
 };
 
-export default CatalogItems;
+export default CatalogFilterAuthors;

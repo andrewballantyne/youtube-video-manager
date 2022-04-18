@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { SearchInput } from '@patternfly/react-core';
-import { VideoAuthorCount } from '../types';
+import { VideoAuthorCount } from '../../types';
 
 type CatalogItemSearchProps = {
-  catalogItems: VideoAuthorCount[];
+  authorsCountStat: VideoAuthorCount[];
   onFilter: (filteredItems: VideoAuthorCount[] | null) => void;
 };
 
-const CatalogItemSearch: React.FC<CatalogItemSearchProps> = ({
-  catalogItems,
+const CatalogFilterAuthorSearch: React.FC<CatalogItemSearchProps> = ({
+  authorsCountStat,
   onFilter,
 }) => {
   const [value, setValue] = React.useState<string>('');
@@ -25,7 +25,7 @@ const CatalogItemSearch: React.FC<CatalogItemSearchProps> = ({
       return;
     }
 
-    onFilter(catalogItems.filter(({ name }) => name.includes(newValue)));
+    onFilter(authorsCountStat.filter(({ name }) => name.includes(newValue)));
   };
 
   return (
@@ -38,4 +38,4 @@ const CatalogItemSearch: React.FC<CatalogItemSearchProps> = ({
   );
 };
 
-export default CatalogItemSearch;
+export default CatalogFilterAuthorSearch;

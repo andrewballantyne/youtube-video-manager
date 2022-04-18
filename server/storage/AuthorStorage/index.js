@@ -12,6 +12,7 @@ module.exports = new Storage(
 /**
  * @property {number} id
  * @property {string} name
+ * @property {string} url
  * @--TODO: property {string} url
  * @--TODO: property {number} imgId
  */

@@ -47,16 +47,13 @@ app.get("/catalogs", (req, res) => {
  */
 app.get("/catalog/:list", (req, res) => {
   const { list } = req.params;
-  const authorIds = list.split(",").map((value) => value);
+  const authorIds = list.split(",").map((value) => parseInt(value));
   console.debug("authorIds", authorIds);
 
-  const data = storage.VideoStorage.get();
-  const videoIds = Object.keys(data);
-  const videos = videoIds
-    .filter((videoId) =>
-      authorIds.find((author) => data[videoId].author === author)
-    )
-    .map((videoId) => data[videoId]);
+  const videoData = storage.VideoStorage.get();
+  const videos = Object.values(videoData).filter((video) =>
+    authorIds.find((authorId) => video.authorId === authorId)
+  );
 
   res.json(videos);
 });

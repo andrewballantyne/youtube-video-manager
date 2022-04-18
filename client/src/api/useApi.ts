@@ -10,8 +10,11 @@ const useApi = <T>(
   const [error, setError] = React.useState<Error | null>(null);
   const lastApiStateRef = React.useRef<ApiState | null>(null);
 
+  const hasData = !!apiState;
+  const canMakeAPICall =
+    hasData && !_.isEqual(lastApiStateRef.current, apiState);
   React.useEffect(() => {
-    if (apiState && !_.isEqual(lastApiStateRef.current, apiState)) {
+    if (canMakeAPICall) {
       lastApiStateRef.current = apiState;
       const { apiPath, method } = apiState;
       fetchApi<T>(apiPath, method)
@@ -22,10 +25,10 @@ const useApi = <T>(
           setError(err);
         });
     }
-  }, [apiState]);
+  }, [apiState, canMakeAPICall]);
 
   const isLoaded = data !== null || error !== null;
-  return [data, isLoaded, error];
+  return [hasData ? data : null, isLoaded, error];
 };
 
 export default useApi;

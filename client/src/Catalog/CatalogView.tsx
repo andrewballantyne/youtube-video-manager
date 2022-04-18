@@ -1,18 +1,11 @@
 import * as React from 'react';
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  EmptyState,
-  EmptyStateIcon,
-  Title,
-} from '@patternfly/react-core';
+import { EmptyState, EmptyStateIcon, Title } from '@patternfly/react-core';
 import YoutubeIcon from '@patternfly/react-icons/dist/esm/icons/youtube-icon';
 import useApi from '../api/useApi';
 import { getCatalogByName } from '../api/apiCallStates';
 import { CatalogId } from './types';
 import { Video } from '../types';
+import CatalogItem from './views/CatalogItem';
 
 type CatalogViewProps = {
   catalogSelections: CatalogId[];
@@ -37,14 +30,10 @@ const CatalogView: React.FC<CatalogViewProps> = ({ catalogSelections }) => {
   return (
     <>
       <Title size="2xl" headingLevel="h2">
-        {catalogSelections.join(', ')} Content
+        Content
       </Title>
       {videos.map((video) => (
-        <Card key={video.id}>
-          <CardTitle>{video.title}</CardTitle>
-          <CardBody>{video.imgId}</CardBody>
-          <CardFooter>{video.duration}</CardFooter>
-        </Card>
+        <CatalogItem key={video.id} data={video} />
       ))}
     </>
   );
