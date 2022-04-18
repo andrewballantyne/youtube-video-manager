@@ -28,7 +28,7 @@ const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
   selectedId,
 }) => {
   const [authorsCountStat, loaded, error] = useApi<VideoAuthorCount[]>(
-    getCatalogAuthorItems
+    getCatalogAuthorItems()
   );
   const [filteredCatalogItems, setFilteredCatalogItems] = React.useState<
     VideoAuthorCount[] | null

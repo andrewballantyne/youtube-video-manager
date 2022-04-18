@@ -1,6 +1,6 @@
 import * as React from 'react';
 import useApi from '../api/useApi';
-import { Author, AuthorId } from '../types';
+import { AuthorKind, AuthorId } from '../types';
 import { getAuthorById } from '../api/apiCallStates';
 import { Spinner } from '@patternfly/react-core';
 
@@ -9,17 +9,17 @@ type AuthorNameFromIdProps = {
 };
 
 const AuthorNameFromId: React.FC<AuthorNameFromIdProps> = ({ id }) => {
-  const [data, loaded, error] = useApi<Author>(getAuthorById(id));
+  const [author, loaded, error] = useApi<AuthorKind>(getAuthorById(id));
 
   if (!loaded) {
     return <Spinner />;
   }
 
-  if (!data || error) {
+  if (!author || error) {
     return <span>[Error getting name]</span>;
   }
 
-  return <span>{data.name}</span>;
+  return <span>{author.name}</span>;
 };
 
 export default AuthorNameFromId;

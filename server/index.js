@@ -56,6 +56,17 @@ app.get("/author/:authorId", (req, res) => {
 /**
  * TODO: Document
  */
+app.get("/image/:imgId", (req, res) => {
+  const { imgId } = req.params;
+
+  const imageData = storage.ImageStorage.get(imgId);
+
+  res.json(imageData);
+});
+
+/**
+ * TODO: Document
+ */
 app.get("/catalog/:authorId", (req, res) => {
   const authorId = parseInt(req.params.authorId);
 

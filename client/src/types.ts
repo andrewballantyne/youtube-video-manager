@@ -2,19 +2,24 @@ export type AuthorId = number;
 export type ImageId = number;
 export type VideoId = number;
 
-export type Author = {
-  id: AuthorId;
-  name: string;
-  url: string;
-};
-
 export type VideoAuthorCount = {
   id: AuthorId;
   count: number;
   name: string;
 };
 
-export type Video = {
+export type ImageKind = {
+  id: ImageId;
+  src: string;
+};
+
+export type AuthorKind = {
+  id: AuthorId;
+  name: string;
+  url: string;
+};
+
+export type VideoKind = {
   id: VideoId;
   authorId: AuthorId;
   duration: string;
