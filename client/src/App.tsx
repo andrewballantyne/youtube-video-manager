@@ -28,7 +28,7 @@ const App = () => {
               </LevelItem>
               <LevelItem>
                 <Title headingLevel="h1" size="2xl">
-                  Youtube Video Manager
+                  YouTube Video Manager
                 </Title>
               </LevelItem>
             </Level>
