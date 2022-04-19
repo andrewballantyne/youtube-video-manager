@@ -73,8 +73,6 @@ const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
             </SplitItem>
           )}
         </Split>
-      </StackItem>
-      <StackItem>
         {visibleItems.length > 0 && (
           <SimpleList>
             {visibleItems.map(({ id, name, count }) => (

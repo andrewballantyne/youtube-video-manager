@@ -28,7 +28,7 @@ const CatalogFilters: React.FC<CatalogItemsProps> = ({
         />
       </StackItem>
       <StackItem>
-        <Title headingLevel="h3">Authors</Title>
+        <Title headingLevel="h3">Content Creators</Title>
         <CatalogFilterAuthors
           onChange={onAuthorsChange}
           selectedId={selectedAuthorId}

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Button,
   EmptyState,
   EmptyStateIcon,
   Label,
@@ -13,9 +14,10 @@ import { getCatalogVideosByAuthorId } from '../api/apiReadStates';
 import { CatalogAuthorId, CatalogDurationState } from './types';
 import { VideoKind } from '../types';
 import CatalogItem from './views/CatalogItem';
-import AuthorNameFromId from '../converters/AuthorNameFromId';
 import { plural } from '../utils/lang';
 import { inDuration } from '../utils/time';
+import ExternalLinkAltIcon from '@patternfly/react-icons/dist/js/icons/external-link-alt-icon';
+import UsingAuthor from '../converters/UsingAuthor';
 
 type CatalogViewProps = {
   selectedAuthorId: CatalogAuthorId;
@@ -41,28 +43,39 @@ const CatalogView: React.FC<CatalogViewProps> = ({
     );
   }
 
-  const filteredVideos = videos.filter((video) => {
-    if (!selectedDuration) return true;
-
-    return inDuration(
-      selectedDuration.min,
-      selectedDuration.max,
-      video.duration
-    );
-  });
+  const filteredVideos = videos.filter(
+    (video) =>
+      !selectedDuration ||
+      inDuration(selectedDuration.min, selectedDuration.max, video.duration)
+  );
 
   return (
     <Stack hasGutter>
       <StackItem>
         <Title size="2xl" headingLevel="h2">
-          <AuthorNameFromId id={selectedAuthorId} />{' '}
+          <UsingAuthor
+            id={selectedAuthorId}
+            render={(author) => <span>{author.name}</span>}
+          />{' '}
           {plural('Video', videos.length)}{' '}
           <Label variant="filled">
             {filteredVideos.length !== videos.length
               ? `${filteredVideos.length} of `
               : ''}
             {videos.length}
-          </Label>
+          </Label>{' '}
+          <UsingAuthor
+            id={selectedAuthorId}
+            render={(author) => (
+              <Button
+                variant="link"
+                icon={<ExternalLinkAltIcon />}
+                onClick={() => window.open(author.url)}
+              >
+                Channel
+              </Button>
+            )}
+          />
         </Title>
       </StackItem>
       <StackItem>
