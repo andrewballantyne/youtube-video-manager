@@ -21,18 +21,30 @@ const CatalogFilters: React.FC<CatalogItemsProps> = ({
   return (
     <Stack hasGutter>
       <StackItem>
-        <Title headingLevel="h3">Duration</Title>
-        <CatalogFilterDuration
-          onDurationChange={onDurationChange}
-          selectedDuration={selectedDuration}
-        />
+        <Stack>
+          <StackItem>
+            <Title headingLevel="h3">Duration</Title>
+          </StackItem>
+          <StackItem>
+            <CatalogFilterDuration
+              onDurationChange={onDurationChange}
+              selectedDuration={selectedDuration}
+            />
+          </StackItem>
+        </Stack>
       </StackItem>
       <StackItem>
-        <Title headingLevel="h3">Content Creators</Title>
-        <CatalogFilterAuthors
-          onChange={onAuthorsChange}
-          selectedId={selectedAuthorId}
-        />
+        <Stack>
+          <StackItem>
+            <Title headingLevel="h3">Content Creators</Title>
+          </StackItem>
+          <StackItem>
+            <CatalogFilterAuthors
+              onChange={onAuthorsChange}
+              selectedId={selectedAuthorId}
+            />
+          </StackItem>
+        </Stack>
       </StackItem>
     </Stack>
   );
