@@ -37,7 +37,7 @@ const CatalogView: React.FC<CatalogViewProps> = ({
       <EmptyState>
         <EmptyStateIcon variant="container" component={YoutubeIcon} />
         <Title size="lg" headingLevel="h4">
-          Select a Content Creator to see Watch Later Items
+          Select a content creator to see associated videos
         </Title>
       </EmptyState>
     );

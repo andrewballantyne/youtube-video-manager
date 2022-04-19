@@ -1,7 +1,7 @@
 {
-  "name": "youtube-watch-list",
+  "name": "youtube-video-manager",
   "version": "1.0.0",
-  "description": "Handles storing and reading back YouTube Watch Later Playlist",
+  "description": "Stylistic UI for managing YouTube Videos",
   "private": true,
   "author": "Andrew Ballantyne (ballantyno@gmail.com)",
   "license": "ISC",
