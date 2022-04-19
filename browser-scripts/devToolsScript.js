@@ -1,4 +1,8 @@
 /**
+ * While viewing YouTube playlist, paste this file/function into your browser dev tools and it will search the page
+ * for each item in the watch list, pull the content from the DOM and fire up a localhost:3001 request to save the
+ * data. If successful, it will remove the item from the list and then loop (if applicable based on the `max` param).
+ *
  * @param max - how many iterations to perform; if not specified, goes until the list is complete.
  */
 const startSubmitWatchItem = (max = Infinity) => {
