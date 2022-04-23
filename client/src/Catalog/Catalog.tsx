@@ -11,7 +11,7 @@ const Catalog: React.FC = () => {
     React.useState<CatalogDurationState>(null);
 
   return (
-    <Split hasGutter>
+    <Split hasGutter style={{ height: '100%' }}>
       <SplitItem>
         <CatalogFilters
           onAuthorsChange={(authorId) => setAuthorSelection(authorId)}
@@ -20,7 +20,7 @@ const Catalog: React.FC = () => {
           selectedDuration={durationSelection}
         />
       </SplitItem>
-      <SplitItem isFilled>
+      <SplitItem isFilled style={{ height: '100%', overflow: 'auto' }}>
         <CatalogView
           selectedAuthorId={authorSelection}
           selectedDuration={durationSelection}

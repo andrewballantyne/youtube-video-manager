@@ -2,13 +2,8 @@ import * as React from 'react';
 import {
   Masthead,
   MastheadMain,
-  MastheadBrand,
-  MastheadContent,
   Page,
   PageSection,
-  Toolbar,
-  ToolbarContent,
-  ToolbarItem,
   Title,
   Level,
   LevelItem,
@@ -36,7 +31,7 @@ const App = () => {
         </Masthead>
       }
     >
-      <PageSection>
+      <PageSection isFilled hasOverflowScroll style={{ paddingRight: 0, paddingBottom: 0 }}>
         <Catalog />
       </PageSection>
     </Page>

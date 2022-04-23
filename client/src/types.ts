@@ -10,6 +10,7 @@ export type VideoAuthorCount = {
 
 export type ImageKind = {
   id: ImageId;
+  alt?: string;
   src: string;
 };
 

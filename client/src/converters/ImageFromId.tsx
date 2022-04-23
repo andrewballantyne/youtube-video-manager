@@ -20,7 +20,7 @@ const ImageFromId: React.FC<ImageFromIdProps> = ({ id }) => {
   }
 
   return (
-    <img alt="Image" src={img.src} style={{ minWidth: 150, maxWidth: 150 }} />
+    <img alt={img.alt} src={img.src} style={{ minWidth: 150, maxWidth: 150 }} />
   );
 };
 
