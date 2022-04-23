@@ -31,7 +31,7 @@ const App = () => {
         </Masthead>
       }
     >
-      <PageSection isFilled hasOverflowScroll style={{ paddingRight: 0, paddingBottom: 0 }}>
+      <PageSection isFilled>
         <Catalog />
       </PageSection>
     </Page>
