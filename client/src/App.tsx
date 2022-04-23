@@ -8,7 +8,7 @@ import {
   Level,
   LevelItem,
 } from '@patternfly/react-core';
-import Catalog from './Catalog/Catalog';
+import Catalog from './video-catalog/Catalog';
 import { YoutubeIcon } from '@patternfly/react-icons';
 
 const App = () => {
