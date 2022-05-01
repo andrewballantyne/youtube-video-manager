@@ -104,7 +104,7 @@ const startSubmitWatchItem = (max = Infinity) => {
         return;
       }
 
-      fetch("http://localhost:3000/submit-data", {
+      fetch("http://localhost:3001/submit-data", {
         method: "post",
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
