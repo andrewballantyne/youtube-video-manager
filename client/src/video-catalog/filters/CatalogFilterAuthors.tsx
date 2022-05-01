@@ -86,7 +86,7 @@ const CatalogFilterAuthors: React.FC<CatalogFilterAuthorsProps> = ({
                 </span>
               </SimpleListItem>
             ))}
-            {!showAll && (
+            {!showAll && visibleItems.length > INITIAL_LIMIT && (
               <SimpleListItem onClick={() => setShowAll(true)}>
                 (Show All)
               </SimpleListItem>

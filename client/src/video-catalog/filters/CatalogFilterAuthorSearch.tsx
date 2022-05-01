@@ -25,7 +25,11 @@ const CatalogFilterAuthorSearch: React.FC<CatalogItemSearchProps> = ({
       return;
     }
 
-    onFilter(authorsCountStat.filter(({ name }) => name.includes(newValue)));
+    onFilter(
+      authorsCountStat.filter(({ name }) =>
+        name.toLowerCase().includes(newValue.toLowerCase())
+      )
+    );
   };
 
   return (
