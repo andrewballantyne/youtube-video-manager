@@ -16,7 +16,7 @@ const CatalogItemActions: React.FC<CatalogItemActionsProps> = ({ video }) => {
   return (
     <Split>
       <SplitItem>
-        <Button variant="plain" onClick={() => window.open(url)}>
+        <Button variant="plain" component="a" href={url} target="_blank">
           <ExternalLinkAltIcon size={IconSize.lg} />
         </Button>
       </SplitItem>

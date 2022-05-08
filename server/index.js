@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  console.log("Request all");
+  logger.log("Request all");
   res.json(storage.VideoStorage.get());
 });
 
@@ -81,13 +81,9 @@ app.get("/catalog/:authorId", (req, res) => {
   const authorId = parseInt(req.params.authorId);
 
   const videoData = storage.VideoStorage.get();
-  const videos = Object.values(videoData)
-    .filter((video) => video.authorId === authorId)
-    .map((video) => ({
-      ...video,
-      // TODO: Update all records to have the base value
-      url: `https://youtube.com${video.url}`,
-    }));
+  const videos = Object.values(videoData).filter(
+    (video) => video.authorId === authorId
+  );
 
   res.json(videos);
 });
@@ -115,7 +111,7 @@ app.post("/submit-data", (req, res) => {
   try {
     const data = req.body;
     const { img, authorName, authorURL, url, ...videoData } = data;
-    console.log("Adding Data", {
+    logger.log("Adding Data", {
       ...videoData,
       url,
       authorId: `[ID] (${authorName} | ${authorURL})`,
@@ -136,7 +132,7 @@ app.post("/submit-data", (req, res) => {
     res.send(`Data saved; New VideoId: ${videoId}`);
     storage.saveAll();
   } catch (e) {
-    console.error("POST error", e.message);
+    logger.error("POST error", e.message);
     storage.resetAll();
 
     if (e instanceof InvalidIdError) {
