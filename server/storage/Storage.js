@@ -75,7 +75,9 @@ class Storage {
       throw new LoadedError(this.type);
     }
     if (data.id !== undefined) {
-      throw new InvalidIdError();
+      throw new InvalidIdError(
+        "Cannot add an existing id -- did you mean update?"
+      );
     }
     const records = Object.values(this.data);
     if (records.length > 0 && records.some(this.isMatchingRecord(data))) {
@@ -95,8 +97,13 @@ class Storage {
       this.logger.error("Not loaded, cannot update data.");
       throw new LoadedError(this.type);
     }
-    if (!data.id && !this.data[data.id]) {
-      throw new InvalidIdError();
+    if (!data.id) {
+      throw new InvalidIdError(
+        "Cannot update, data does not have id -- did you mean add?"
+      );
+    }
+    if (!this.data[data.id]) {
+      throw new InvalidIdError("Cannot update data with a non-matching id");
     }
 
     this.data[data.id] = { ...this.data[data.id], ...data };

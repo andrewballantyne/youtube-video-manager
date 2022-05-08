@@ -119,18 +119,19 @@ app.post("/submit-data", (req, res) => {
       ...videoData,
       imgId: `[ID] (${img.substring(0, 20)}...)`,
     });
-    const videoId = storage.VideoStorage.add(videoData);
     const imgId = storage.ImageStorage.add({ src: img });
+    const videoId = storage.VideoStorage.add(videoData);
     storage.VideoStorage.update({ id: videoId, imgId });
 
-    res.send(`Data saved; New VideoId: ${videoId}`);
+    res.status(500).send(`Data saved; New VideoId: ${videoId}`);
   } catch (e) {
     console.error("POST error", e.message);
     if (e instanceof InvalidIdError) {
-      res.status(400).send("Record already exists");
+      res.status(400).send(`Invalid client data. ${e.message}`);
+      return;
     }
 
-    res.status(500).send(`Server Error. ${e.message}`);
+    res.status(500).send(`Server error. ${e.message}`);
   }
 });
 
