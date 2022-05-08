@@ -1,7 +1,7 @@
 const EXPRESS_PORT = 3001;
-const SAVE_DURATION = 10_000;
+const ROOT_URL = "https://youtube.com";
 
 module.exports = {
   EXPRESS_PORT,
-  SAVE_DURATION,
+  ROOT_URL,
 };

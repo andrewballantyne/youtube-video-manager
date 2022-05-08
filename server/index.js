@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { EXPRESS_PORT, SAVE_DURATION } = require("./constants");
+const { EXPRESS_PORT, ROOT_URL } = require("./constants");
 const storage = require("./storage");
 const Logger = require("./Logger");
 const { InvalidIdError } = require("./error");
@@ -114,18 +114,31 @@ app.get("/ordered", (req, res) => {
 app.post("/submit-data", (req, res) => {
   try {
     const data = req.body;
-    const { img, ...videoData } = data;
+    const { img, authorName, authorURL, url, ...videoData } = data;
     console.log("Adding Data", {
       ...videoData,
-      imgId: `[ID] (${img.substring(0, 20)}...)`,
+      url,
+      authorId: `[ID] (${authorName} | ${authorURL})`,
+      imgId: `[ID] (${img.substring(0, 20)}...)`, // base64 image
+    });
+    const authorId = storage.AuthorStorage.add({
+      name: authorName,
+      url: `${ROOT_URL}${authorURL}`,
     });
     const imgId = storage.ImageStorage.add({ src: img });
-    const videoId = storage.VideoStorage.add(videoData);
-    storage.VideoStorage.update({ id: videoId, imgId });
+    const videoId = storage.VideoStorage.add({
+      ...videoData,
+      url: `${ROOT_URL}${url}`,
+      authorId,
+      imgId,
+    });
 
-    res.status(500).send(`Data saved; New VideoId: ${videoId}`);
+    res.send(`Data saved; New VideoId: ${videoId}`);
+    storage.saveAll();
   } catch (e) {
     console.error("POST error", e.message);
+    storage.resetAll();
+
     if (e instanceof InvalidIdError) {
       res.status(400).send(`Invalid client data. ${e.message}`);
       return;
@@ -139,18 +152,6 @@ app.post("/submit-data", (req, res) => {
  * Server started -- starts storages.
  */
 app.listen(EXPRESS_PORT, () => {
-  console.log(`Example app listening on port ${EXPRESS_PORT}`);
-  const storages = Object.keys(storage);
-  storages.forEach((storageName) => {
-    storage[storageName].startup();
-  });
-
-  logger.log(
-    `Persist loop started, triggering at ${SAVE_DURATION}ms intervals...`
-  );
-  setInterval(() => {
-    storages.forEach((storageName) => {
-      storage[storageName].persistStorage();
-    });
-  }, SAVE_DURATION);
+  logger.log(`Listening on port ${EXPRESS_PORT}`);
+  storage.startAll();
 });

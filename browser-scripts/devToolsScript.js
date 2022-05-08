@@ -40,6 +40,8 @@ const startSubmitWatchItem = (max = Infinity) => {
         getVideoAuthorGroupElm(item)
       )[0];
     const getVideoAuthor = (item) => getVideoAuthorElm(item).innerText;
+    const getVideoAuthorURL = (item) =>
+      getVideoAuthorElm(item).getAttribute("href");
 
     const getDurationElm = (item) =>
       selectMultiple(tagNamePredicate("span"), "text", item)[0];
@@ -90,7 +92,8 @@ const startSubmitWatchItem = (max = Infinity) => {
       const data = {
         title: getVideoTitle(playlistItem),
         url: getVideoURL(playlistItem),
-        author: getVideoAuthor(playlistItem),
+        authorName: getVideoAuthor(playlistItem),
+        authorURL: getVideoAuthorURL(playlistItem),
         img: base64,
         duration: getDuration(playlistItem),
       };

@@ -15,11 +15,21 @@ class Storage {
     this.url = `${path}/storage.json`;
     this.type = type;
     this.logger = new Logger(type);
+
+    this.configureDefaults();
+  }
+
+  configureDefaults = () => {
     this.data = {};
     this.nextId = 0;
     this.dirty = false;
     this.loaded = false;
-  }
+  };
+
+  resetStorage = () => {
+    this.configureDefaults();
+    this.startStorage();
+  };
 
   persistStorage = () => {
     if (!this.dirty) return;
@@ -40,7 +50,7 @@ class Storage {
     }
   };
 
-  startup = () => {
+  startStorage = () => {
     if (this.loaded) {
       this.logger.error("Cannot startup, already started");
       return;
@@ -55,13 +65,13 @@ class Storage {
         readDataJson = JSON.parse(readData);
       }
     } catch (e) {
-      this.logger.error("Unable to read & parse data", e);
+      this.logger.error("Unable to read & parse data", e.message);
       return;
     }
     this.data = readDataJson;
     const keys = Object.keys(readDataJson)
       .map((stringId) => parseInt(stringId, 10))
-      .sort();
+      .sort((a, b) => a - b);
     const lastKey = keys[keys.length - 1] ?? 0;
     this.nextId = lastKey + 1;
 
